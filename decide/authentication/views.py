@@ -1,3 +1,4 @@
+from base import mods
 
 from rest_framework.response import Response
 from rest_framework import viewsets
@@ -11,7 +12,6 @@ from rest_framework.status import (
 )
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -76,7 +76,6 @@ class LDAPLogin(APIView):
     Class to authenticate a user via LDAP and
     then creating a login session
     """
-    authentication_classes = ()
 
     def post(self, request):
         """
@@ -84,7 +83,6 @@ class LDAPLogin(APIView):
         :param request:
         :return:
         """
-
         try:
             # Probamos la conexion con el servidor con las siguientes instrucciones
             con = ldap.initialize(AUTH_LDAP_SERVER_URI)
@@ -93,38 +91,22 @@ class LDAPLogin(APIView):
                 # Probamos a logear con los datos enviados por el usuario
                 user_obj = authenticate(username=request.data['username'],
                                         password=request.data['password'])
-                login(request, user_obj,
-                      backend='django_auth_ldap.backend.LDAPBackend')
-                data = {'detail': 'User logged in successfully'}
-                status = HTTP_200_OK
+                login(request, user_obj, backend='django_auth_ldap.backend.LDAPBackend')
+                
+                #Añadir token al sesion para poder votar, en otro caso el votar con un usuario registrado con ldap resulta en un panic
+                if user_obj and request.content_type == 'application/x-www-form-urlencoded':
+                    user_data = {
+                        'username': request.data['username'],
+                        'password': request.data['password'],
+                    }
+                    token = mods.post('authentication', entry_point='/login/', json=user_data)
+                    request.session['auth-token'] = token['token']
+
+                return render(request, 'welcome.html', status=HTTP_200_OK)
             except AttributeError:
-                data = {'detail': 'Credenciales mal'}
-                status = HTTP_400_BAD_REQUEST
+                return render(request, 'welcome.html', status=HTTP_400_BAD_REQUEST)
         except ldap.SERVER_DOWN:
-            data = {'detail': 'Problema con el servicio LDAP'}
-            status = HTTP_500_INTERNAL_SERVER_ERROR
-        return render(request, 'welcome.html', status=status)
-
-
-class LDAPLogout(APIView):
-    """
-    Class for logging out a user by clearing his/her session
-    """
-    permission_classes = (IsAuthenticated,)
-
-    def post(self, request):
-        """
-        Api to logout a user
-        :param request:
-        :return:
-        """
-        logout(request)
-        data = {'detail': 'User logged out successfully'}
-        return Response(data, status=200)
-
-
-class LDAPSignInView(LoginView):
-    template_name = 'login_ldap_view.html'
+            return render(request, 'welcome.html', status=HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class SignInView(LoginView):
@@ -170,7 +152,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 def cerrarsesion(request):
     print("==========================LOGOUT========================")
-
+    
     logout(request)
     messages.success(request, F"Su sesión se ha cerrado correctamente")
     return render(request, "welcome.html")

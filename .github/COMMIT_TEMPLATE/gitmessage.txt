@@ -1,0 +1,10 @@
+Título del commit utilizando el imperativo (con menos 50 caracteres).
+Siguiendo el formato:
+xxx: Título commit (donde xxx es la categoría del commit de las siguientes 
+categorías chore, docs, feat, fix, refactor, style, test).
+
+Descripción detallada de los cambios introducidos en el commit utilizando 
+la forma impersonal (70 caracteres como máximo).
+
+Coautores en el caso de existir.
+

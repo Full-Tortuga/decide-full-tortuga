@@ -1,14 +1,20 @@
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
+from django.shortcuts import redirect, render
+from django.views.generic import TemplateView
+from django.http import HttpResponse
 import django_filters.rest_framework
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import generics
+from rest_framework.request import Request
 
 from .models import Vote
 from .serializers import VoteSerializer
 from base import mods
 from base.perms import UserIsStaff
+
+
 
 
 class StoreView(generics.ListAPIView):
@@ -33,6 +39,7 @@ class StoreView(generics.ListAPIView):
         voting = mods.get('voting', params={'id': vid})
         if not voting or not isinstance(voting, list):
             return Response({}, status=status.HTTP_401_UNAUTHORIZED)
+        
         start_date = voting[0].get('start_date', None)
         end_date = voting[0].get('end_date', None)
         not_started = not start_date or timezone.now() < parse_datetime(start_date)
@@ -58,15 +65,36 @@ class StoreView(generics.ListAPIView):
         if perms.status_code == 401:
             return Response({}, status=status.HTTP_401_UNAUTHORIZED)
 
-        a = vote.get("a")
-        b = vote.get("b")
+        #Comprobamos que el voto está registrado
+        voto_registrado = Vote.objects.filter(voting_id=vid, voter_id=uid)
+        
+        if voto_registrado:
+            #En caso de editar el voto
+            #Se elimina  el voto anterior registrado
+            for vt in voto_registrado:
+                vt.delete()
 
-        defs = { "a": a, "b": b }
-        v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,
-                                          defaults=defs)
-        v.a = a
-        v.b = b
+            a = vote.get("a")
+            b = vote.get("b")
 
-        v.save()
+            defs = { "a": a, "b": b }
+            v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,
+                                            defaults=defs)
+            v.a = a
+            v.b = b
 
-        return  Response({})
+            v.save()
+            return  Response({})
+
+        else:
+            a = vote.get("a")
+            b = vote.get("b")
+
+            defs = { "a": a, "b": b }
+            v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,
+                                            defaults=defs)
+            v.a = a
+            v.b = b
+
+            v.save()
+            return  Response({})

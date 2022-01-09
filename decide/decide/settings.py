@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
+import django_heroku
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -71,16 +72,23 @@ MODULES = [
     'postproc',
     'store',
     'visualizer',
+    'backups'
 ]
 
-''''
-    'mixnet',
-    'postproc',
-    'store',
-    'visualizer',
-    'voting','''
 
-BASEURL = 'http://localhost:8000'
+BASEURL = 'https://decide-full-tortuga-4.herokuapp.com'
+
+APIS = {
+    'authentication': BASEURL,
+    'base': BASEURL,
+    'booth': BASEURL,
+    'census': BASEURL,
+    'mixnet': BASEURL,
+    'postproc': BASEURL,
+    'store': BASEURL,
+    'visualizer': BASEURL,
+    'voting': BASEURL,
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # added to solve CORS
@@ -125,10 +133,13 @@ WSGI_APPLICATION = 'decide.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'prueba',
-        'CLIENT': {
-            'host': '127.0.0.1',
-        }
+        "CLIENT": {
+            "name": 'decide',
+            "host": 'mongodb+srv://decide:@decide.3vypb.mongodb.net/decide?retryWrites=true&w=majority',
+            "username": 'decide',
+            "password": 'decide',
+            "authMechanism": "SCRAM-SHA-1",
+        },
     }
 }
 
@@ -192,3 +203,10 @@ if os.path.exists("config.jsonnet"):
         vars()[k] = v
 
 INSTALLED_APPS = INSTALLED_APPS + MODULES
+
+NOSE_ARGS = [
+    '--with-xunit'
+]
+django_heroku.settings(locals(), test_runner=False)
+
+PANEL_URI = "https://decide-full-tortuga-front.herokuapp.com"

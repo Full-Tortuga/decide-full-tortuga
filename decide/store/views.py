@@ -128,8 +128,6 @@ class StoreView(generics.ListAPIView):
                 v.a = a
                 v.b = b
 
-                v.save()
-                return  Response({})
 
             else:
                 a = vote.get("a")
@@ -141,5 +139,5 @@ class StoreView(generics.ListAPIView):
                 v.a = a
                 v.b = b
 
-                v.save()
-                return  Response({})
+        v.save()
+        return  Response({})

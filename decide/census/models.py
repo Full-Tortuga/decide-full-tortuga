@@ -9,11 +9,13 @@ class Census(models.Model):
         ('M', 'Male'),
         ('F', 'Female'),
     )
+    votingTypes = (('V', 'Voting'), ('BV', 'BinaryVoting'), ('MV', 'MultipleVoting'), ('SV', 'ScoreVoting'))
+    type = models.CharField(max_length=2, choices=votingTypes, default='V')
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     region = models.CharField(max_length=100)
 
-    votingTypes = (('V', 'Voting'), ('BV', 'BinaryVoting'), ('MV', 'MultipleVoting'), ('SV', 'ScoreVoting'))
-    type = models.CharField(max_length=2, choices=votingTypes, default='V')
+    
+    
 
     #A new census is valid if the pair is not already in the database
     def clean(self):

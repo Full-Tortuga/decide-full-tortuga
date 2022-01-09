@@ -5,16 +5,10 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
 from rest_framework.response import Response
-<<<<<<< HEAD
-import os
-from .models import Question, QuestionOption, Voting
 from .serializers import SimpleVotingSerializer, VotingSerializer, VotingSerializerList
-=======
-
 from .models import BinaryQuestion, BinaryQuestionOption, BinaryVoting, MultipleQuestion, MultipleQuestionOption, MultipleVoting, Question, QuestionOption, ScoreQuestion, ScoreQuestionOption, ScoreVoting, Voting
 from .serializers import (BinaryVotingSerializer, MultipleVotingSerializer, SimpleBinaryVotingSerializer, SimpleMultipleVotingSerializer, 
                           SimpleVotingSerializer, VotingSerializer, SimpleScoreVotingSerializer,ScoreVotingSerializer)
->>>>>>> master
 from base.perms import UserIsStaff
 from base.models import Auth
 from rest_framework.status import (
@@ -22,6 +16,18 @@ from rest_framework.status import (
     HTTP_201_CREATED as ST_201,
     HTTP_400_BAD_REQUEST as ST_400,
 )
+
+class listVot(generics.ListCreateAPIView):
+    queryset = Voting.objects.all()
+    serializer_class = VotingSerializerList
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
+
+    def get(self, request, *args, **kwargs):
+        version = request.version
+        if version not in settings.ALLOWED_VERSIONS:
+            version = settings.DEFAULT_VERSION
+
+        return super().get(request, *args, **kwargs)
 
 class VotingView(generics.ListCreateAPIView):
     queryset = Voting.objects.all()
@@ -112,13 +118,6 @@ class VotingUpdate(generics.RetrieveUpdateDestroyAPIView):
             st = status.HTTP_400_BAD_REQUEST
         return Response(msg, status=st)
 
-<<<<<<< HEAD
-
-class listVot(generics.ListCreateAPIView):
-    queryset = Voting.objects.all()
-    serializer_class = VotingSerializerList
-    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
-=======
 class BinaryVotingView(generics.ListCreateAPIView):
     queryset = BinaryVoting.objects.all()
     serializer_class = BinaryVotingSerializer
@@ -301,16 +300,11 @@ class ScoreVotingView(generics.ListCreateAPIView):
     serializer_class = ScoreVotingSerializer
     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
     filter_fields = ('id', )
->>>>>>> master
 
     def get(self, request, *args, **kwargs):
         version = request.version
         if version not in settings.ALLOWED_VERSIONS:
             version = settings.DEFAULT_VERSION
-<<<<<<< HEAD
-
-        return super().get(request, *args, **kwargs)
-=======
         if version == 'v2':
             self.serializer_class = SimpleScoreVotingSerializer
 
@@ -388,4 +382,3 @@ class ScoreVotingUpdate(generics.RetrieveUpdateDestroyAPIView):
             msg = 'Action not found, try with start, stop or tally'
             st = status.HTTP_400_BAD_REQUEST
         return Response(msg, status=st)
->>>>>>> master

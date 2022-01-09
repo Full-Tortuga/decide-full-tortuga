@@ -216,7 +216,7 @@ class StoreTextCase(BaseTestCase):
         user = self.get_or_create_user(USUARIO)
 
         #Creamos la votación
-        voting = self.gen_voting(VOTING_ID)
+        voting = self.gen_voting(VOTING_ID, TYPE)
 
         #Añadimos el usuario al censo
         census = Census(voting_id = VOTING_ID, voter_id = USUARIO, type = TYPE)
@@ -265,7 +265,7 @@ class StoreTextCase(BaseTestCase):
         user = self.get_or_create_user(USUARIO)
 
         #Creamos la votación
-        voting = self.gen_voting(VOTING_ID)
+        voting = self.gen_voting(VOTING_ID, TYPE)
 
         #Añadimos el usuario al censo
         census = Census(voting_id = VOTING_ID, voter_id = USUARIO, type = TYPE)
@@ -300,5 +300,5 @@ class StoreTextCase(BaseTestCase):
         }
         self.login(user=user.username)
         response = self.client.post('/store/', vote, format='json')
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 400)
 

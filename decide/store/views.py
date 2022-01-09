@@ -39,9 +39,13 @@ class StoreView(generics.ListAPIView):
         """
 
         vid = request.data.get('voting')
+        print(vid)
         uid = request.data.get('voter')
+        print(uid)
         vote = request.data.get('vote')
+        print(vote)
         type = request.data.get('type')
+        print(type)
 
         if not vid or not uid or not vote:
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
@@ -104,37 +108,38 @@ class StoreView(generics.ListAPIView):
                 v = Vote(voting_id=vid, voter_id=uid, type=voting.type)
                 v.a = a
                 v.b = b
-
-        #Comprobamos que el voto está registrado
-        voto_registrado = Vote.objects.filter(voting_id=vid, voter_id=uid, type=voting.type)
-        
-        if voto_registrado:
-            #En caso de editar el voto
-            #Se elimina  el voto anterior registrado
-            for vt in voto_registrado:
-                vt.delete()
-
-            a = vote.get("a")
-            b = vote.get("b")
-
-            defs = { "a": a, "b": b }
-            v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,
-                                            defaults=defs, type=voting.type)
-            v.a = a
-            v.b = b
-
-            v.save()
-            return  Response({})
-
         else:
-            a = vote.get("a")
-            b = vote.get("b")
 
-            defs = { "a": a, "b": b }
-            v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,
-                                            defaults=defs, type=voting.type)
-            v.a = a
-            v.b = b
+            #Comprobamos que el voto está registrado
+            voto_registrado = Vote.objects.filter(voting_id=vid, voter_id=uid, type=voting.type)
+            
+            if voto_registrado:
+                #En caso de editar el voto
+                #Se elimina  el voto anterior registrado
+                for vt in voto_registrado:
+                    vt.delete()
 
-            v.save()
-            return  Response({})
+                a = vote.get("a")
+                b = vote.get("b")
+
+                defs = { "a": a, "b": b }
+                v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,
+                                                defaults=defs, type=voting.type)
+                v.a = a
+                v.b = b
+
+                v.save()
+                return  Response({})
+
+            else:
+                a = vote.get("a")
+                b = vote.get("b")
+
+                defs = { "a": a, "b": b }
+                v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,
+                                                defaults=defs, type=voting.type)
+                v.a = a
+                v.b = b
+
+                v.save()
+                return  Response({})

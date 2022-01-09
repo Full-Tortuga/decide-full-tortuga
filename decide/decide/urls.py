@@ -36,5 +36,6 @@ for module in settings.MODULES:
     urlpatterns += [
         path('{}/'.format(module), include('{}.urls'.format(module)))
     ]
-
+    
 urlpatterns += staticfiles_urlpatterns()
+

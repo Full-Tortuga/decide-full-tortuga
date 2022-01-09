@@ -131,12 +131,13 @@ Abra un nuevo contenedor con el cliente mínimo de open ldap en su equipo, para 
 
 ```sh
 docker run  -p 389:389 \
-            -d carvilgar1us/ldapdecide
+            -d carvilgar1us/decideldap
 ```
-Esta nueva imagen ya contiene un usuario por defecto con credenciales **username = foobar & password = test**.Para verificar que el contenedor está corriendo correctamente el servicio slapd, pruebe el siguiente
+
+Para verificar que el contenedor está corriendo correctamente el servicio slapd, pruebe el siguiente
 comando en su máquina HOST.
 ```sh
-docker exec -it <CONTAINER_ID> slapcat
+ldapsearch -x -b "dc=decide, dc=org" -H ldap://:389 
 ```
 La consola debe de devolver:
 \# extended LDIF
@@ -167,10 +168,6 @@ Si es lo que usted ha obtenido entonces puede continuar.
 
 ## Añadir objetos a la organización
 
-deberá ver las domain component de decide.org y el miembro foobar ya instanciado.
-
-## Añadir objetos a la organización
-Estos pasos son **OPCIONALES** ya que la imagen trae un usuario para utilizar los servicios LDAP.
 ### Organitational Units
 
 A continuación añadiremos las _Organitational Units_(ou) a nuestra organización,para ello cree un fichero con extensión ldif y ejecútelo con privilegios root **En su maquina HOST**.

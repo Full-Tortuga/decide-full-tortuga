@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import django_heroku
 import os
+#Dependencias para el incremento de ldap
+import ldap
+from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -56,7 +59,25 @@ REST_FRAMEWORK = {
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.QueryParameterVersioning'
 }
 
+AUTH_LDAP_SERVER_URI = 'ldap://:389'
+
+AUTH_LDAP_BIND_DN = 'cn=admin,dc=decide,dc=org'
+AUTH_LDAP_BIND_PASSWORD = 'decide'
+AUTH_LDAP_USER_SEARCH = LDAPSearch(
+    'ou=people,dc=decide,dc=org',
+    ldap.SCOPE_SUBTREE,
+    '(uid=%(user)s)',
+)
+
+# Populate the Django user from the LDAP directory.
+AUTH_LDAP_USER_ATTR_MAP = {
+    'first_name': 'cn',
+    'last_name': 'sn',
+    'email': 'mail',
+}
+
 AUTHENTICATION_BACKENDS = [
+    'django_auth_ldap.backend.LDAPBackend',
     'base.backends.AuthBackend',
 ]
 

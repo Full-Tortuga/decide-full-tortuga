@@ -1,3 +1,4 @@
+
 """
 Django settings for decide project.
 
@@ -13,9 +14,9 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 import ldap
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -27,8 +28,6 @@ SECRET_KEY = '^##ydkswfu0+=ofw0l#$kv^8n)0$i(qd&d&ol#p9!b$8*5%j1+'
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
-CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Application definition
@@ -62,6 +61,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 MODULES = [
+    'administration',
     'authentication',
     'base',
     'booth',
@@ -116,7 +116,7 @@ ROOT_URLCONF = 'decide.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'administration', 'frontend')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -196,6 +196,7 @@ if os.path.exists("config.jsonnet"):
 INSTALLED_APPS = INSTALLED_APPS + MODULES
 
 PANEL_URI = "http://localhost:3000"
+
 AUTH_LDAP_SERVER_URI = 'ldap://:389'
 
 AUTH_LDAP_BIND_DN = 'cn=admin,dc=decide,dc=org'

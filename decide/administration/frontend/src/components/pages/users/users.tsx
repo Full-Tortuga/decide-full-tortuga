@@ -11,6 +11,7 @@ import {
 import { userApi } from "api";
 import { userType } from "types";
 
+import { Severity } from "components/01-atoms/Notification";
 import { ActionBar } from "components/03-organisms";
 import { UserForm, UserTable } from "components/templates";
 
@@ -21,9 +22,13 @@ const UsersPage = () => {
   const [selected, setSelected] = React.useState([]);
   const [refetch, setRefetch] = React.useState(false);
 
-  React.useEffect(() => {
-    console.log(selected);
-  }, [selected]);
+  const [notifications, setNotifications] = React.useState<
+    { type: Severity; message: string }[]
+  >([]);
+
+  const notify = (type: Severity, message: string) => {
+    setNotifications((prev) => [...prev, { type, message }]);
+  };
 
   const refetchUsers = () => {
     setRefetch(!refetch);
@@ -33,12 +38,9 @@ const UsersPage = () => {
     userApi
       .getUsers()
       .then((response) => {
-        console.log(response);
         setUsers(response.data);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => notify("error", "Users not fetched: " + error.message));
   }, [refetch]);
 
   const idList = React.useMemo(
@@ -71,28 +73,47 @@ const UsersPage = () => {
   }, [selected]);
 
   const handleDelete = () => {
-    userApi.deleteUsers(idList).then((response) => {
-      console.log(response);
-      refetchUsers();
-    });
+    userApi
+      .deleteUsers(idList)
+      .then((response) => {
+        refetchUsers();
+        notify("success", "User/s deleted");
+      })
+      .catch((error) =>
+        notify("error", "Error deleting user/s: " + error.message)
+      );
   };
 
   const handleChangeActive = (value: boolean) => {
-    userApi.updateUsersActive(idList, value).then((response) => {
-      console.log(response);
-      refetchUsers();
-    });
+    notify("info", "Loading...");
+
+    userApi
+      .updateUsersActive(idList, value)
+      .then((response) => {
+        refetchUsers();
+        notify("success", "User/s status changed");
+      })
+      .catch((error) =>
+        notify("error", "Error updating status: " + error.message)
+      );
   };
   const handleChangeRole = (value: boolean, role: "Staff" | "Superuser") => {
-    userApi.updateUsersRole(idList, value, role).then((response) => {
-      console.log(response);
-      refetchUsers();
-    });
+    notify("info", "Loading...");
+
+    userApi
+      .updateUsersRole(idList, value, role)
+      .then((response) => {
+        refetchUsers();
+        notify("success", "User/s roles changed");
+      })
+      .catch((error) =>
+        notify("error", "Error updating roles: " + error.message)
+      );
   };
 
   return (
     <>
-      <Page title="Users">
+      <Page title="Users" notifications={notifications}>
         <UserTable users={users} setSelected={setSelected} />
       </Page>
       <ActionBar
@@ -101,6 +122,7 @@ const UsersPage = () => {
           <UserForm
             initialUser={selected.length === 1 ? selected[0] : undefined}
             refetch={refetchUsers}
+            notify={notify}
           />,
         ]}
         individualActions={[
@@ -115,7 +137,6 @@ const UsersPage = () => {
             icon: <Delete />,
             title: "Delete",
             onClick: () => {
-              console.log("delete");
               handleDelete();
             },
           },
@@ -132,7 +153,6 @@ const UsersPage = () => {
                 : "Mark as Active",
             disabled: selectionState.active === "mixed",
             onClick: () => {
-              console.log("switch active");
               selectionState.active === "true"
                 ? handleChangeActive(false)
                 : handleChangeActive(true);
@@ -149,7 +169,6 @@ const UsersPage = () => {
               selectionState.staff === "true" ? "Remove Staff" : "Make Staff",
             disabled: selectionState.staff === "mixed",
             onClick: () => {
-              console.log("switch staff");
               selectionState.staff === "true"
                 ? handleChangeRole(false, "Staff")
                 : handleChangeRole(true, "Staff");
@@ -168,7 +187,6 @@ const UsersPage = () => {
                 : "Make SuperUser",
             disabled: selectionState.su === "mixed",
             onClick: () => {
-              console.log("switch staff");
               selectionState.su === "true"
                 ? handleChangeRole(false, "Superuser")
                 : handleChangeRole(true, "Superuser");

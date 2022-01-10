@@ -59,6 +59,7 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         run: |
           cd decide
+          ./manage.py collectstatic --noinput
           coverage run --source= . ./manage.py test --settings=decide.test_settings --noinput -v 2
           coverage xml
       - name: Codacy Coverage Reporter

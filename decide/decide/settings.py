@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
+import django_heroku
 import os
 import django_heroku
 
@@ -72,30 +73,10 @@ MODULES = [
     'postproc',
     'store',
     'visualizer',
+    'backups'
 ]
 
-ENV_DEVELOP = os.environ.get('ENV_DEVELOP', False)
-ENV_MAIN = os.environ.get('ENV_MAIN', False)
-
-if ENV_DEVELOP:
-    BASEURL = 'https://decide-full-tortuga-admin-dev.herokuapp.com'
-elif ENV_MAIN:
-    BASEURL = 'https://decide-full-tortuga-admin.herokuapp.com'
-else:
-    BASEURL = 'http://localhost:8000'
-
-APIS = {
-    'administration': BASEURL,
-    'authentication': BASEURL,
-    'base': BASEURL,
-    'booth': BASEURL,
-    'census': BASEURL,
-    'mixnet': BASEURL,
-    'postproc': BASEURL,
-    'store': BASEURL,
-    'visualizer': BASEURL,
-    'voting': BASEURL,
-}
+BASEURL = 'https://decide-full-tortuga.herokuapp.com'
 
 APIS = {
     'administration': BASEURL,
@@ -224,4 +205,11 @@ if os.path.exists("config.jsonnet"):
         vars()[k] = v
 
 INSTALLED_APPS = INSTALLED_APPS + MODULES
-django_heroku.settings(locals())
+
+
+NOSE_ARGS = [
+    '--with-xunit'
+]
+django_heroku.settings(locals(), test_runner=False)
+
+PANEL_URI = "https://decide-full-tortuga-front.herokuapp.com"

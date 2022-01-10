@@ -1,11 +1,6 @@
-[![Admin Build CI](https://github.com/Full-Tortuga/decide-full-tortuga-admin/actions/workflows/django.yml/badge.svg?branch=main)](https://github.com/Full-Tortuga/decide-full-tortuga-admin/actions/workflows/django.yml)
-[![Admin Frontend CI](https://github.com/Full-Tortuga/decide-full-tortuga-admin/actions/workflows/react.yml/badge.svg?branch=main)](https://github.com/Full-Tortuga/decide-full-tortuga-admin/actions/workflows/react.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/b9ce0c7587164af4bd18e4cbd1b90a9d)](https://www.codacy.com/gh/Full-Tortuga/decide-full-tortuga/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Full-Tortuga/decide-full-tortuga&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/b9ce0c7587164af4bd18e4cbd1b90a9d)](https://www.codacy.com/gh/Full-Tortuga/decide-full-tortuga/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Full-Tortuga/decide-full-tortuga&amp;utm_campaign=Badge_Coverage)
 
-[![Test Deployment CD](https://github.com/Full-Tortuga/decide-full-tortuga-admin/actions/workflows/herokuDevelop.yml/badge.svg?branch=main)](https://github.com/Full-Tortuga/decide-full-tortuga-admin/actions/workflows/herokuDevelop.yml)
-[![Test Deployment CD](https://github.com/Full-Tortuga/decide-full-tortuga-admin/actions/workflows/herokuMain.yml/badge.svg?branch=main)](https://github.com/Full-Tortuga/decide-full-tortuga-admin/actions/workflows/herokuMain.yml)
-
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a9e07b14853a487d82a187bc69365d50)](https://www.codacy.com/gh/Full-Tortuga/decide-full-tortuga-admin/dashboard?utm_source=github.com&utm_medium=referral&utm_content=Full-Tortuga/decide-full-tortuga-admin&utm_campaign=Badge_Grade)
-[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/a9e07b14853a487d82a187bc69365d50)](https://www.codacy.com/gh/Full-Tortuga/decide-full-tortuga-admin/dashboard?utm_source=github.com&utm_medium=referral&utm_content=Full-Tortuga/decide-full-tortuga-admin&utm_campaign=Badge_Coverage)
 
 Plataforma voto electrónico educativa
 
@@ -58,7 +53,7 @@ Para configurar el proyecto, podremos crearnos un fichero local_settings.py basa
 local_settings.example.py, donde podremos configurar la ruta de nuestras apps o escoger que módulos
 ejecutar.
 
-Se hará uso de la base de datos MongoDB, para el correcto funcionamiento de la aplicación será necesaria la instalación de dicha base de datos siguiendo las instrucciones de la documentación oficial según el SO que estemos utilizando:
+Se hará uso de la base de datos MongoDB. Para el correcto funcionamiento de la aplicación será necesaria la instalación de dicha base de datos siguiendo las instrucciones de la documentación oficial según el SO que estemos utilizando:
 
 Windows: - https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
 
@@ -77,8 +72,6 @@ En caso de fallo al instalar las dependencias, es necesario instalas el paquete 
 
     pip install wheel
 
-Entramos en la carpeta del proyecto (cd decide) y realizamos las migraciones correspondientes para preparar la base de datos:
-
 Además, será necesario instalar las dependencias correspondientes al panel de control desarrollado con
 React. Para ello, primero se deberán tener instaldas las siguientes librerías de js con sus correspondientes
 versiones: Node=14.15.0, npm=7.8.0.
@@ -96,11 +89,11 @@ realizamos la primera migración para preparar la base de datos que utilizaremos
 Por último, ya podremos ejecutar el módulos o módulos seleccionados en la configuración de la
 siguiente manera:
 
-    ./manage.py runserver
+    ./manage.py runserver --settings=decide.test_settings
 
 También debemos lanzar el panel de control, para ello dentro de la carpeta decide_panel ejecutamos:
 
-    npm start
+    npm run start:local
 
 ## Nuevo panel de administración
 

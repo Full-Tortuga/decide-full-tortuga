@@ -1,6 +1,7 @@
 
 [![Decide CI/CD](https://github.com/Full-Tortuga/decide-full-tortuga-autenticacion/actions/workflows/heroku.yml/badge.svg?branch=master)](https://github.com/Full-Tortuga/decide-full-tortuga-autenticacion/actions/workflows/heroku.yml)
-[![Build Status](https://travis-ci.com/wadobo/decide.svg?branch=master)](https://travis-ci.com/wadobo/decide) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/94a85eaa0e974c71af6899ea3b0d27e0)](https://www.codacy.com/app/Wadobo/decide?utm_source=github.com&utm_medium=referral&utm_content=wadobo/decide&utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/94a85eaa0e974c71af6899ea3b0d27e0)](https://www.codacy.com/app/Wadobo/decide?utm_source=github.com&utm_medium=referral&utm_content=wadobo/decide&utm_campaign=Badge_Coverage)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f3b3438fde5848c2b463afaefe1dc0b6)](https://www.codacy.com/gh/Full-Tortuga/decide-full-tortuga-almacenamiento/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Full-Tortuga/decide-full-tortuga-almacenamiento&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/f3b3438fde5848c2b463afaefe1dc0b6)](https://www.codacy.com/gh/Full-Tortuga/decide-full-tortuga-almacenamiento/dashboard?utm_source=github.com&utm_medium=referral&utm_content=Full-Tortuga/decide-full-tortuga-almacenamiento&utm_campaign=Badge_Coverage)
 
 Plataforma voto electrónico educativa
 
@@ -53,7 +54,7 @@ Para configurar el proyecto, podremos crearnos un fichero local_settings.py basa
 local_settings.example.py, donde podremos configurar la ruta de nuestras apps o escoger que módulos
 ejecutar.
 
-Se hará uso de la base de datos MongoDB, para el correcto funcionamiento de la aplicación será necesaria la instalación de dicha base de datos siguiendo las instrucciones de la documentación oficial según el SO que estemos utilizando:
+Se hará uso de la base de datos MongoDB. Para el correcto funcionamiento de la aplicación será necesaria la instalación de dicha base de datos siguiendo las instrucciones de la documentación oficial según el SO que estemos utilizando:
 
 Windows: - https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
 
@@ -69,10 +70,8 @@ fichero requirements.txt:
     pip install -r requirements.txt
 
 En caso de fallo al instalar las dependencias, es necesario instalas el paquete wheel y volver al comando anterior:
-    
-    pip install wheel
 
-Entramos en la carpeta del proyecto (cd decide) y realizamos las migraciones correspondientes para preparar la base de datos:
+    pip install wheel
 
 Además, será necesario instalar las dependencias correspondientes al panel de control desarrollado con
 React. Para ello, primero se deberán tener instaldas las siguientes librerías de js con sus correspondientes
@@ -91,11 +90,11 @@ realizamos la primera migración para preparar la base de datos que utilizaremos
 Por último, ya podremos ejecutar el módulos o módulos seleccionados en la configuración de la
 siguiente manera:
 
-    ./manage.py runserver
+    ./manage.py runserver --settings=decide.test_settings
 
 También debemos lanzar el panel de control, para ello dentro de la carpeta decide_panel ejecutamos:
 
-    npm start
+    npm run start:local
 
 ## Nuevo panel de administración
 

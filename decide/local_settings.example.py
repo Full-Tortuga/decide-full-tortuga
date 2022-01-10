@@ -14,6 +14,7 @@ CSRF_TRUSTED_ORIGINS = [
     BASEURL, FE_BASEURL
 ]
 
+
 # Modules in use, commented modules that you won't use
 MODULES = [
     'administration',
@@ -26,6 +27,7 @@ MODULES = [
     'store',
     'visualizer',
     'voting',
+    'backups'
 ]
 
 

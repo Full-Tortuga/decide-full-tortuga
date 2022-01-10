@@ -96,20 +96,7 @@ MODULES = [
     'backups'
 ]
 
-
-BASEURL = 'https://decide-full-tortuga-4.herokuapp.com'
-
-APIS = {
-    'authentication': BASEURL,
-    'base': BASEURL,
-    'booth': BASEURL,
-    'census': BASEURL,
-    'mixnet': BASEURL,
-    'postproc': BASEURL,
-    'store': BASEURL,
-    'visualizer': BASEURL,
-    'voting': BASEURL,
-}
+BASEURL = 'https://decide-full-tortuga.herokuapp.com'
 
 APIS = {
     'administration': BASEURL,
@@ -238,6 +225,7 @@ if os.path.exists("config.jsonnet"):
         vars()[k] = v
 
 INSTALLED_APPS = INSTALLED_APPS + MODULES
+
 
 NOSE_ARGS = [
     '--with-xunit'

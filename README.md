@@ -1,7 +1,6 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/b9ce0c7587164af4bd18e4cbd1b90a9d)](https://www.codacy.com/gh/Full-Tortuga/decide-full-tortuga/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Full-Tortuga/decide-full-tortuga&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/b9ce0c7587164af4bd18e4cbd1b90a9d)](https://www.codacy.com/gh/Full-Tortuga/decide-full-tortuga/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Full-Tortuga/decide-full-tortuga&amp;utm_campaign=Badge_Coverage)
 
-[![Decide CI/CD](https://github.com/Full-Tortuga/decide-full-tortuga-autenticacion/actions/workflows/heroku.yml/badge.svg?branch=master)](https://github.com/Full-Tortuga/decide-full-tortuga-autenticacion/actions/workflows/heroku.yml)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f3b3438fde5848c2b463afaefe1dc0b6)](https://www.codacy.com/gh/Full-Tortuga/decide-full-tortuga-almacenamiento/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Full-Tortuga/decide-full-tortuga-almacenamiento&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/f3b3438fde5848c2b463afaefe1dc0b6)](https://www.codacy.com/gh/Full-Tortuga/decide-full-tortuga-almacenamiento/dashboard?utm_source=github.com&utm_medium=referral&utm_content=Full-Tortuga/decide-full-tortuga-almacenamiento&utm_campaign=Badge_Coverage)
 
 Plataforma voto electrónico educativa
 
@@ -81,7 +80,7 @@ A continuación, entramos en la carpeta del panel (cd decide_panel) y ejecutamos
 
     npm install
 
-Situados en el directorio raíz del proyecto, entramos en la carpeta del proyecto (cd decide) y 
+Situados en el directorio raíz del proyecto, entramos en la carpeta del proyecto (cd decide) y
 realizamos la primera migración para preparar la base de datos que utilizaremos:
 
     ./manage.py makemigrations
@@ -134,6 +133,7 @@ docker run  -p 389:389 \
 ```
 Esta nueva imagen ya contiene un usuario por defecto con credenciales **username = foobar & password = test**.Para verificar que el contenedor está corriendo correctamente el servicio slapd, pruebe el siguiente
 comando en su máquina HOST.
+
 ```sh
 docker exec -it <CONTAINER_ID> slapcat
 ```
@@ -147,7 +147,7 @@ La consola debe de devolver:
 \# LDAPv3
 \# base <dc=decide, dc=org> with scope subtree
 
-\# filter: (objectclass=*)
+\# filter: (objectclass=\*)
 \# requesting: ALL
 \#
 
@@ -276,7 +276,6 @@ Puede probar que funcione haciendo una petición desde Postman
 ---
 
 ## Ejecutar con docker
-
 
 Existe una configuración de docker compose que lanza 3 contenedores, uno
 para el servidor de base de datos, otro para el django y otro con un

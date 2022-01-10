@@ -13,6 +13,7 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: [3.9]
+        node-version: [16.13.0, 14.15.0]
 
     services:
       mongodb:
@@ -23,8 +24,8 @@ jobs:
           - 27017:27017
         options: --health-cmd mongo --health-interval 10s --health-timeout 5s --health-retries 5
 
-      ldap:
-        image: carvilgar1us/decideldap
+      ldap-decide:
+        image: 'carvilgar1us/ldapdecide'
         ports:
           - 389:389
 
@@ -66,3 +67,24 @@ jobs:
         with:
           project-token: ${{ secrets.CODACY_API_TOKEN }}
           coverage-reports: decide/coverage.xml
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install decide_panel dependencies
+        run: cd decide_panel && npm install
+      - name: Deploy decide
+        run: |
+          cd decide && 
+          python manage.py runserver --settings=decide.test_settings &
+      - name: Deploy decide_panel
+        run: |
+          cd decide_panel && 
+          npm run start:local &
+      - name: Test React app
+        run: cd decide_panel && npm run test:e2e
+      - name: Codacy Coverage Reporter React
+        uses: codacy/codacy-coverage-reporter-action@v1.1.0
+        with:
+          project-token: ${{ secrets.CODACY_API_TOKEN }}
+          coverage-reports: decide_panel/coverage/clover.xml

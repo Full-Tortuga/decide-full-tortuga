@@ -1,3 +1,4 @@
+
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
@@ -12,7 +13,7 @@ from rest_framework.authtoken.models import Token
 # from selenium.webdriver.common.by import By
 # from selenium.webdriver.support import expected_conditions as EC
 # from selenium.webdriver.chrome.options import Options
-# from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+# from django.test.testcases import LiveServerTestCase
 from base import mods
 
 class AuthTestCase(APITestCase):
@@ -324,7 +325,7 @@ class AuthTestCase(APITestCase):
         self.assertEqual(response.status_code, 400)
 
         
-# class SeleniumLandingPageTestCase(StaticLiveServerTestCase):
+# class SeleniumLandingPageTestCase(LiveServerTestCase):
 #     def setUp(self):
 #         self.base = BaseTestCase()
 #         self.base.setUp()
@@ -378,16 +379,16 @@ class AuthTestCase(APITestCase):
 #         self.driver.find_element_by_id("signoffbutton").click()
 #         self.assertEqual(self.driver.current_url,f'{self.live_server_url}/authentication/userlogout/')
 
-# class SeleniumTestCase(StaticLiveServerTestCase):
+# class SeleniumTestCase(LiveServerTestCase):
 
 #     def setUp(self):
 #         self.base = BaseTestCase()
 #         self.base.setUp()
 
 #         options = webdriver.ChromeOptions()
-#         options.add_argument("--no-sandbox")
-#         options.add_argument("--disable-dev-shm-usage")
-#         options.add_argument("--headless")
+#         # options.add_argument("--no-sandbox")
+#         # options.add_argument("--disable-dev-shm-usage")
+#         # options.add_argument("--headless")
 #         self.driver = webdriver.Chrome(options=options)
 #         super().setUp()            
             
@@ -418,16 +419,16 @@ class AuthTestCase(APITestCase):
 #         self.driver.find_element_by_name('password').send_keys("qwerty",Keys.ENTER)
 #         self.assertTrue(self.driver.current_url==f'{self.live_server_url}/authentication/bienvenida/')
 
-# class SeleniumLDAPViewTestCase(StaticLiveServerTestCase):
+# class SeleniumLDAPViewTestCase(LiveServerTestCase):
 
 #     def setUp(self):
 #         self.base = BaseTestCase()
 #         self.base.setUp()
 
 #         options = webdriver.ChromeOptions()
-#         options.add_argument("--no-sandbox")
-#         options.add_argument("--disable-dev-shm-usage")
-#         options.add_argument("--headless")
+#         # options.add_argument("--no-sandbox")
+#         # options.add_argument("--disable-dev-shm-usage")
+#         # options.add_argument("--headless")
 #         self.driver = webdriver.Chrome(options=options)
 #         super().setUp()            
             
